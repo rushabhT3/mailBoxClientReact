@@ -13,4 +13,4 @@ To get started with the Mailbox Client:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/mailbox-client.git
+   git clone https://github.com/rushabhT3/mailBoxClientReact.git
