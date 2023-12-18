@@ -2,6 +2,23 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// ? parseJwt function
+function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,8 +31,16 @@ const LoginPage = () => {
         email,
         password,
       });
+      const { token } = await response.data;
+      localStorage.setItem("token", token);
+      const decodedToken = parseJwt(token);
+      console.log(decodedToken);
 
-      console.log("Login successful:", response.data);
+      // ? Access payload data (example: userId, email)
+      const userId = decodedToken.userId;
+      const userEmail = decodedToken.email;
+
+      console.log("Decoded Token:", decodedToken);
 
       setEmail("");
       setPassword("");
