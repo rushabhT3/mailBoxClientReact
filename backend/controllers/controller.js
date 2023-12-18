@@ -1,4 +1,7 @@
+const jwt = require("jsonwebtoken");
+
 const User = require("../models/model");
+const Mail = require('../models/mail');
 
 const helloWorld = (req, res) => {
   res.send("Hello, World!");
@@ -21,10 +24,44 @@ const login = async (req, res) => {
     if (!user || password !== user.password) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-    res.status(200).json({ user });
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      "your-secret-key",
+      {
+        expiresIn: "1h", // ? Token expiration time
+      }
+    );
+    res.status(200).json({ user, token });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-module.exports = { signUp, helloWorld, login };
+const compose = async (req, res) => {
+  try {
+    const { sender, receiver, subject, content } = req.body;
+    if (!sender || !receiver || !subject || !content) {
+      return res.status(400).json({
+        message: 'Sender, receiver, subject, and content are required',
+      });
+    }
+    const mail = await Mail.create({
+      sender,
+      receiver,
+      subject,
+      content
+    });
+    res.status(201).json({
+      message: 'Mail successfully sent',
+      mail: mail
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'An error occurred while sending the mail',
+      error: error.message
+    });
+  }
+};
+
+module.exports = { signUp, helloWorld, login, compose };
