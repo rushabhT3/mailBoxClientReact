@@ -20,6 +20,7 @@ const MainPage = () => {
       setShowDialog(false);
     }
   };
+  
   return (
     <div
       style={{

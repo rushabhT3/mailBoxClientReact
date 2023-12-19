@@ -6,22 +6,28 @@ export default function ErrorPage() {
   console.error(error);
 
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, this page does not exist 😫</p>
-      <img
-        src="https://media.tenor.com/0P9HnYj-1UIAAAAM/bhupendrab-jogi-naam-batiye.gif"
-        alt="Error Image"
-      />
-      <p>{/* <i>{error.statusText || error.message}</i> */}</p>
-      <p>
-        <NavLink
-          to="/signUp"
-          className="text-blue-500 hover:text-blue-700 hover:underline"
-        >
-          Go to Sign Up Page 🙂
-        </NavLink>
-      </p>
+    <div id="error-page" class="py-10 px-6 w-full">
+      <div class="mb-4">
+        <h1 class="text-4xl font-bold text-center">Oops!</h1>
+      </div>
+      <div class="mb-4 text-gray-500 text-lg text-center">
+        <p>Sorry, this page does not exist </p>
+      </div>
+      <div class="mx-auto mt-8">
+        <img
+          src="https://media.tenor.com/0P9HnYj-1UIAAAAM/bhupendrab-jogi-naam-batiye.gif"
+          alt="Error Image"
+        />
+      </div>
+      <div class="text-sm text-gray-400 text-center">
+        <i>{error.statusText || error.message}</i>
+      </div>
+      <NavLink
+        to="/signUp"
+        class="inline-block text-blue-500 hover:text-blue-700 hover:underline"
+      >
+        Go to Sign Up Page
+      </NavLink>
     </div>
   );
 }
