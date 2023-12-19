@@ -19,6 +19,10 @@ const Mail = sequelize.define("Mail", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  isRead: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 module.exports = Mail;
