@@ -22,25 +22,10 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-const EmailWriter = () => {
+const EmailWriter = ({ closeDialog }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [to, setTo] = useState("");
   const [subject, setSubject] = useState("");
-  const [showDialog, setShowDialog] = useState(false);
-
-  const openDialog = () => {
-    setShowDialog((prevState) => !prevState);
-  };
-
-  const closeDialog = () => {
-    // ! Show a confirmation dialog: window.confirm se
-    const isConfirmed = window.confirm(
-      "Are you sure? The message won't be saved."
-    );
-    if (isConfirmed) {
-      setShowDialog(false);
-    }
-  };
 
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
@@ -75,16 +60,6 @@ const EmailWriter = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      {!showDialog && (
-        <button
-          type="button"
-          className="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md shadow-md hover:bg-blue-600 fixed top-0 right-0 mr-4 mt-4"
-          onClick={openDialog}
-        >
-          Compose Email
-        </button>
-      )}
-      {showDialog && (
         <div className="fixed top-0 left-0 w-full h-screen bg-gray-900 opacity-75 flex flex-col items-center justify-center">
           <div className="bg-white p-8 rounded-md shadow-lg w-full md:w-3/4 lg:w-1/2 xl:w-2/3 h-5/6">
             <form onSubmit={handleSend} className="space-y-6">
@@ -117,6 +92,7 @@ const EmailWriter = () => {
                 wrapperClassName="border rounded-md"
                 editorClassName="h-32 resize-none px-3 py-2"
                 onEditorStateChange={onEditorStateChange}
+                placeholder="start writing your email"
               />
               <div className="flex justify-end">
                 <button
@@ -136,7 +112,6 @@ const EmailWriter = () => {
             </form>
           </div>
         </div>
-      )}
     </div>
   );
 };
