@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import ParseJWT from "./ParseJWT";
@@ -15,47 +15,56 @@ const MailTable = () => {
   const unreadCount = emails.filter((email) => !email.isRead).length;
 
   useEffect(() => {
-    const fetchEmails = async () => {
+    const fetchEmailsInterval = setInterval(async () => {
       try {
         const response = await axios.get(
           `http://localhost:3001/findMails/?receiver=${userEmail}`
         );
-        setEmails(response.data.emails);
+        const newEmails = response.data.emails;
+        // if (newEmails.length > emails.length) {
+        // console.log("not hehe", newEmails.length, emails.length);
+        setEmails(newEmails);
+        // }
       } catch (error) {
         console.error("Error fetching emails:", error.response.data);
       }
-    };
-
-    fetchEmails();
+    }, 2000);
+    return () => clearInterval(fetchEmailsInterval); // ! Clear interval on unmount
   }, []);
 
-  const handleDelete = async (emailKiId) => {
-    try {
-      await axios.delete(`http://localhost:3001/deleteEmail/${emailKiId}`);
-      setEmails((prevEmails) =>
-        prevEmails.filter((email) => email.id !== emailKiId)
-      );
-    } catch (error) {
-      console.error("Error deleting email:", error.response.data);
-    }
-  };
+  const handleDelete = useCallback(
+    async (emailKiId) => {
+      try {
+        await axios.delete(`http://localhost:3001/deleteEmail/${emailKiId}`);
+        setEmails((prevEmails) =>
+          prevEmails.filter((email) => email.id !== emailKiId)
+        );
+      } catch (error) {
+        console.error("Error deleting email:", error.response.data);
+      }
+    },
+    [emails]
+  );
 
-  const markAsRead = async (emailKiId) => {
-    try {
-      await axios.post(`http://localhost:3001/markAsRead`, { emailKiId });
-      setEmails((prevEmails) => {
-        return prevEmails.map((email) => {
-          if (email.id === emailKiId) {
-            return { ...email, isRead: true };
-          } else {
-            return email;
-          }
+  const markAsRead = useCallback(
+    async (emailKiId) => {
+      try {
+        await axios.post(`http://localhost:3001/markAsRead`, { emailKiId });
+        setEmails((prevEmails) => {
+          return prevEmails.map((email) => {
+            if (email.id === emailKiId) {
+              return { ...email, isRead: true };
+            } else {
+              return email;
+            }
+          });
         });
-      });
-    } catch (error) {
-      console.error("Error marking email as read:", error.response.data);
-    }
-  };
+      } catch (error) {
+        console.error("Error marking email as read:", error.response.data);
+      }
+    },
+    [emails]
+  );
 
   return (
     <div className="px-10">
