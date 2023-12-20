@@ -6,8 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ErrorPage from "./pages/ErrorPage";
 import MainPage from "./pages/MainPage";
-// import DummyPage from "./pages/DummyPage";
-// import ProfilePage from "./pages/ProfilePage";
+import SentMessagePage from "./pages/SentMessagePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +23,7 @@ function App() {
           element: <SignUpPage />,
         },
         { path: "/main", element: <MainPage /> },
+        { path: "/sentMessage", element: <SentMessagePage /> },
         {
           path: "*",
           element: <ErrorPage />,

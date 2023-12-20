@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import EmailWriter from "../components/EmailWriter";
 import MailTable from "../components/MailTable";
 import ComposeButton from "../components/ComposeButton";
+import SentMessageButton from "../components/SentMessageButton";
 
 const MainPage = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -20,7 +21,7 @@ const MainPage = () => {
       setShowDialog(false);
     }
   };
-  
+
   return (
     <div
       style={{
@@ -33,6 +34,7 @@ const MainPage = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
+      <SentMessageButton />
       <ComposeButton openDialog={openDialog} />
       {showDialog ? (
         <div>

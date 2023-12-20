@@ -18,7 +18,7 @@ const MailTable = () => {
     const fetchEmails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/findMails/?sender=${userEmail}`
+          `http://localhost:3001/findMails/?receiver=${userEmail}`
         );
         setEmails(response.data.emails);
       } catch (error) {
