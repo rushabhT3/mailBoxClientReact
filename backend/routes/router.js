@@ -7,6 +7,7 @@ const {
   login,
   compose,
   findMailBySender,
+  getSentMessages,
 } = require("../controllers/controller");
 const { deleteEmail, markAsRead } = require("../controllers/individual");
 
@@ -23,5 +24,7 @@ router.get("/findMails", findMailBySender);
 router.delete("/deleteEmail/:emailKiId", deleteEmail);
 
 router.post("/markAsRead", markAsRead);
+
+router.get("/getSentMessages/:userEmail", getSentMessages);
 
 module.exports = router;

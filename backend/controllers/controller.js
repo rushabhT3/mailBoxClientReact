@@ -66,20 +66,20 @@ const compose = async (req, res) => {
 
 const findMailBySender = async (req, res) => {
   try {
-    const { sender } = req.query;
-    if (!sender) {
+    const { receiver } = req.query;
+    if (!receiver) {
       return res.status(400).json({
-        message: "Sender is required",
+        message: "receiver is required",
       });
     }
     const mails = await Mail.findAll({
       where: {
-        receiver: sender,
+        receiver: receiver,
       },
     });
 
     res.status(200).json({
-      message: "Emails found by sender successfully",
+      message: "Emails found by receiver successfully",
       emails: mails,
     });
   } catch (error) {
@@ -90,4 +90,41 @@ const findMailBySender = async (req, res) => {
   }
 };
 
-module.exports = { signUp, helloWorld, login, compose, findMailBySender };
+const getSentMessages = async (req, res) => {
+  try {
+    const { userEmail } = req.params;
+
+    if (!userEmail) {
+      return res.status(400).json({
+        message: "User email is required",
+      });
+    }
+
+    const sentMessages = await Mail.findAll({
+      where: {
+        sender: userEmail,
+      },
+    });
+    console.log(sentMessages);
+
+    res.status(200).json({
+      message: "Sent messages found successfully",
+      sentMessages: sentMessages,
+    });
+  } catch (error) {
+    console.error("Error fetching sent messages:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching sent messages.",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  signUp,
+  helloWorld,
+  login,
+  compose,
+  findMailBySender,
+  getSentMessages,
+};
