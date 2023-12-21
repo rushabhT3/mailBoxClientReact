@@ -23,6 +23,14 @@ const Mail = sequelize.define("Mail", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  deletedBySender: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  deletedByReceiver: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 module.exports = Mail;

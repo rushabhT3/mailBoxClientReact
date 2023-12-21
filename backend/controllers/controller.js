@@ -75,6 +75,7 @@ const findMailBySender = async (req, res) => {
     const mails = await Mail.findAll({
       where: {
         receiver: receiver,
+        deletedByReceiver: false,
       },
     });
 

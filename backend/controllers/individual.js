@@ -4,14 +4,12 @@ const Mail = require("../models/mail");
 const deleteEmail = async (req, res) => {
   try {
     const { emailKiId } = req.params;
-    console.log(emailKiId);
     if (!emailKiId) {
       return res
         .status(400)
         .json({ message: "Email ID is required for deletion." });
     }
 
-    // ! correct this
     const email = await Mail.findOne({
       where: {
         id: emailKiId,
@@ -20,8 +18,8 @@ const deleteEmail = async (req, res) => {
     if (!email) {
       return res.status(404).json({ message: "Email not found." });
     }
-    await email.destroy();
 
+    await email.update({ deletedByReceiver: true });
     res.status(200).json({ message: "Email deleted successfully." });
   } catch (error) {
     console.error("Error deleting email:", error);
