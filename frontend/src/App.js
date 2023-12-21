@@ -16,6 +16,7 @@ function App() {
       children: [
         {
           path: "/login",
+          // exact: true,
           element: <LoginPage />,
         },
         {

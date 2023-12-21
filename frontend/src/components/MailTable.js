@@ -32,39 +32,33 @@ const MailTable = () => {
     return () => clearInterval(fetchEmailsInterval); // ! Clear interval on unmount
   }, []);
 
-  const handleDelete = useCallback(
-    async (emailKiId) => {
-      try {
-        await axios.delete(`http://localhost:3001/deleteEmail/${emailKiId}`);
-        setEmails((prevEmails) =>
-          prevEmails.filter((email) => email.id !== emailKiId)
-        );
-      } catch (error) {
-        console.error("Error deleting email:", error.response.data);
-      }
-    },
-    [emails]
-  );
+  const handleDelete = useCallback(async (emailKiId) => {
+    try {
+      await axios.delete(`http://localhost:3001/deleteEmail/${emailKiId}`);
+      setEmails((prevEmails) =>
+        prevEmails.filter((email) => email.id !== emailKiId)
+      );
+    } catch (error) {
+      console.error("Error deleting email:", error.response.data);
+    }
+  }, []);
 
-  const markAsRead = useCallback(
-    async (emailKiId) => {
-      try {
-        await axios.post(`http://localhost:3001/markAsRead`, { emailKiId });
-        setEmails((prevEmails) => {
-          return prevEmails.map((email) => {
-            if (email.id === emailKiId) {
-              return { ...email, isRead: true };
-            } else {
-              return email;
-            }
-          });
+  const markAsRead = useCallback(async (emailKiId) => {
+    try {
+      await axios.post(`http://localhost:3001/markAsRead`, { emailKiId });
+      setEmails((prevEmails) => {
+        return prevEmails.map((email) => {
+          if (email.id === emailKiId) {
+            return { ...email, isRead: true };
+          } else {
+            return email;
+          }
         });
-      } catch (error) {
-        console.error("Error marking email as read:", error.response.data);
-      }
-    },
-    [emails]
-  );
+      });
+    } catch (error) {
+      console.error("Error marking email as read:", error.response.data);
+    }
+  }, []);
 
   return (
     <div className="px-10">
@@ -105,7 +99,7 @@ const MailTable = () => {
             </thead>
             <tbody className="bg-white dark:bg-gray-800">
               {emails.map((email) => (
-                <tr key={email.id} onClick={() => setOpenEmailId(email.id)}>
+                <tr key={email.id}>
                   <td className="px-6 py-4">
                     {email.isRead ? (
                       <span className="text-gray-500 dark:text-gray-400">
@@ -121,8 +115,11 @@ const MailTable = () => {
                           : "text-blue-600 dark:text-yellow-500 hover:underline"
                       }`}
                       // ! this is how to disable it
-                      disabled={email.isRead}
-                      onClick={() => markAsRead(email.id)}
+                      // disabled={email.isRead}
+                      onClick={() => {
+                        markAsRead(email.id);
+                        setOpenEmailId(email.id);
+                      }}
                     >
                       {email.isRead ? "Already Read" : "Not Read"}
                     </button>

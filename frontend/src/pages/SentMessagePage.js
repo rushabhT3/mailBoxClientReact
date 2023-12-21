@@ -63,7 +63,6 @@ const SentMessagePage = () => {
         ) : (
           <table className="w-full table-auto min-w-full">
             <thead className="bg-gray-200">
-              {" "}
               {/* Adjust header background */}
               <tr>
                 <th className="px-4 py-2 text-left">Receiver</th>
