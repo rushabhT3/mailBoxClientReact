@@ -7,21 +7,14 @@ This project is a high-end, production-ready MailBox client and server. It featu
 ## 📸 Screenshots
 
 ### 🔑 Authentication Flow
-![Login Page Layout](file:///c:/rough/mailBoxClientReact/docs/screenshots/login_page.png)
-*Placeholder: Premium split-screen login architecture.*
+![Login Page Layout](https://github.com/user-attachments/assets/35dee67b-ba24-415c-9523-9e7f7a89c7fa)
 
-![Sign Up Page Layout](file:///c:/rough/mailBoxClientReact/docs/screenshots/signup_page.png)
-*Placeholder: Minimalist sign-up with bold typography.*
+![Sign Up Page Layout](https://github.com/user-attachments/assets/ecd5226d-7eec-4697-8c6e-2ba000f60a12)
 
 ### 📬 Mail Dashboard
-![Main Inbox](file:///c:/rough/mailBoxClientReact/docs/screenshots/main_inbox.png)
-*Placeholder: Sticky sidebar navigation with monochromatic message list.*
+![Email Composition](https://github.com/user-attachments/assets/f682d711-6235-4b49-acf7-3cb9da8a8c44)
 
-![Email Composition](file:///c:/rough/mailBoxClientReact/docs/screenshots/compose_view.png)
-*Placeholder: Immersive dark-mode editor.*
-
-![Sent Messages](file:///c:/rough/mailBoxClientReact/docs/screenshots/sent_messages.png)
-*Placeholder: Scalable outbox for sent transmissions.*
+![Sent Messages](https://github.com/user-attachments/assets/1ab31f39-1d1e-4192-9101-5d3fbcaf9b7b)
 
 ---
 
