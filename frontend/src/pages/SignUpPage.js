@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { signUp } from "features/auth/api/authApi";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
@@ -11,25 +11,15 @@ const SignUpPage = () => {
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    console.log(password, passwordConfirmation);
     if (password !== passwordConfirmation) {
       alert("Passwords do not match!");
       return;
     }
 
-    const userData = {
-      email: email,
-      password: password,
-    };
+    const userData = { email, password };
 
     try {
-      console.log(userData);
-      const response = await axios.post(
-        "http://localhost:3001/signUp",
-        userData
-      );
-      console.log(response.data);
-
+      await signUp(userData);
       setEmail("");
       setPassword("");
       setPasswordConfirmation("");
@@ -40,94 +30,77 @@ const SignUpPage = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-[#050505] text-white overflow-hidden">
+      {/* Sticky Left Section */}
+      <div className="lg:w-1/2 p-12 lg:sticky lg:top-0 h-fit lg:h-screen flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[#1a1a1a]">
         <div>
-          <a href="/">
-            <h3 className="text-4xl font-bold text-purple-600">
-              Sign Up Here 👑
-            </h3>
-          </a>
+           <h1 className="text-[12vw] lg:text-[10vw] font-black leading-[0.8] tracking-tighter uppercase mb-8">
+            Sign<br/>Up
+          </h1>
+          <p className="text-gray-400 max-w-sm uppercase tracking-widest text-xs font-bold">
+            Join the elite messaging platform. Purely monochromatic, highly efficient.
+          </p>
         </div>
-        <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">
-          <form onSubmit={submitHandler}>
-            <div className="mt-4">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 undefined"
-              >
-                Email
+        <div className="mt-12 lg:mt-0">
+          <button 
+            onClick={() => navigate("/login")}
+            className="text-xs font-bold uppercase tracking-widest hover:text-purple-500 transition-colors"
+          >
+            ← Already a member
+          </button>
+        </div>
+      </div>
+
+      {/* Scrollable Right Section (Form) */}
+      <div className="lg:w-1/2 p-12 flex items-center justify-center">
+        <div className="w-full max-w-md">
+          <form onSubmit={submitHandler} className="space-y-12">
+            <div className="group relative">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 group-focus-within:text-purple-500 transition-colors">
+                Email Address
               </label>
-              <div className="flex flex-col items-start">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  required
-                />
-              </div>
+              <input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                className="block w-full bg-transparent border-b-2 border-[#1a1a1a] py-4 focus:outline-none focus:border-purple-600 transition-colors text-xl font-medium"
+                placeholder="MAIL@DOMAIN.COM"
+                required
+              />
             </div>
-            <div className="mt-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 undefined"
-              >
+
+            <div className="group relative">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 group-focus-within:text-purple-500 transition-colors">
                 Password
               </label>
-              <div className="flex flex-col items-start">
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  required
-                />
-              </div>
+              <input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                className="block w-full bg-transparent border-b-2 border-[#1a1a1a] py-4 focus:outline-none focus:border-purple-600 transition-colors text-xl font-medium"
+                placeholder="********"
+                required
+              />
             </div>
-            <div className="mt-4">
-              <label
-                htmlFor="password_confirmation"
-                className="block text-sm font-medium text-gray-700 undefined"
-              >
+
+            <div className="group relative">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 group-focus-within:text-purple-500 transition-colors">
                 Confirm Password
               </label>
-              <div className="flex flex-col items-start">
-                <input
-                  type="password"
-                  id="password_confirmation"
-                  name="password_confirmation"
-                  onChange={(e) => setPasswordConfirmation(e.target.value)}
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  required
-                />
-              </div>
+              <input
+                type="password"
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                className="block w-full bg-transparent border-b-2 border-[#1a1a1a] py-4 focus:outline-none focus:border-purple-600 transition-colors text-xl font-medium"
+                placeholder="********"
+                required
+              />
             </div>
-            {/* <a href="#" className="text-xs text-purple-600 hover:underline">
-              Forget Password?
-            </a> */}
-            <div className="flex items-center mt-4">
-              <button
-                type="submit"
-                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
-              >
-                Register
-              </button>
-            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-white text-black py-6 text-sm font-black uppercase tracking-[0.3em] hover:bg-purple-600 hover:text-white transition-all duration-300 transform active:scale-[0.98]"
+            >
+              Initialize Account
+            </button>
           </form>
-          <div className="mt-4 text-grey-600">
-            Already have an account?{" "}
-            <span>
-              <button
-                className="text-purple-600 hover:underline"
-                onClick={() => navigate("/login")}
-              >
-                Log in
-              </button>
-            </span>
-          </div>
         </div>
       </div>
     </div>

@@ -1,22 +1,7 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
-
-// ? parseJwt function
-function parseJwt(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    window
-      .atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-  return JSON.parse(jsonPayload);
-}
+import { useNavigate } from "react-router-dom";
+import { login } from "features/auth/api/authApi";
+import { parseJwt } from "features/auth/utils/parseJwt";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -26,122 +11,82 @@ const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/login", {
-        email,
-        password,
-      });
-      const { token } = await response.data;
+      const data = await login(email, password);
+      const { token } = data;
       localStorage.setItem("token", token);
       const decodedToken = parseJwt(token);
-      console.log(decodedToken);
-
-      // ? Access payload data (example: userId, email)
-      const userId = decodedToken.userId;
-      const userEmail = decodedToken.email;
-
       console.log("Decoded Token:", decodedToken);
 
       setEmail("");
       setPassword("");
       navigate("/main");
     } catch (error) {
-      console.error("Login failed:", error.response.data);
+      console.error("Login failed:", error.response?.data || error.message);
     }
   };
 
   return (
-    <section className="h-screen">
-      <div className="h-full">
-        {/* <!-- Left column container with background--> */}
-        <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
-          <div className="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
-            <img
-              src="https://images.unsplash.com/photo-1545529468-42764ef8c85f?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              className="w-full"
-              alt="Sample image"
-            />
-          </div>
-
-          {/* <!-- Right column container --> */}
-          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
-            <form onSubmit={handleSubmit}>
-              {/* Email input */}
-              <div className="mb-6">
-                <label htmlFor="email" className="block text-gray-700">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 p-3 w-full border rounded-md"
-                  placeholder="Your email"
-                  required
-                />
-              </div>
-
-              {/* Password input */}
-              <div className="mb-6">
-                <label htmlFor="password" className="block text-gray-700">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 p-3 w-full border rounded-md"
-                  placeholder="Your password"
-                  required
-                />
-              </div>
-
-              <div className="mb-6 flex items-center justify-between">
-                {/* Remember me checkbox */}
-                {/* <label className="inline-flex items-center">
-              <input
-                type="checkbox"
-                className="form-checkbox text-primary border-primary"
-              />
-              <span className="ml-2 text-gray-700">Remember me</span>
-            </label> */}
-
-                {/* Forgot password link */}
-                {/* <Link to="/forgot-password" className="text-primary">
-              Forgot password?
-            </Link> */}
-              </div>
-
-              {/* Login button */}
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="inline-block rounded bg-primary text-black px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                >
-                  Login
-                </button>
-              </div>
-
-              {/* Register link */}
-              <p className="mt-4 text-sm text-gray-600 text-center">
-                Don't have an account?{" "}
-                <NavLink
-                  to="/signUp"
-                  className={({ isActive, isPending }) =>
-                    isPending
-                      ? "pending"
-                      : isActive
-                      ? "text-primary-active"
-                      : "text-primary hover:underline"
-                  }
-                >
-                  📌 Sign Up
-                </NavLink>
-              </p>
-            </form>
-          </div>
+    <div className="flex flex-col lg:flex-row min-h-screen bg-[#050505] text-white overflow-hidden">
+      {/* Sticky Left Section */}
+      <div className="lg:w-1/2 p-12 lg:sticky lg:top-0 h-fit lg:h-screen flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[#1a1a1a]">
+        <div>
+          <h1 className="text-[12vw] lg:text-[10vw] font-black leading-[0.8] tracking-tighter uppercase mb-8">
+            Log<br/>In
+          </h1>
+          <p className="text-gray-400 max-w-sm uppercase tracking-widest text-xs font-bold">
+            Access your secure communications. Minimal, fast, and private.
+          </p>
+        </div>
+        <div className="mt-12 lg:mt-0">
+          <button 
+            onClick={() => navigate("/signUp")}
+            className="text-xs font-bold uppercase tracking-widest hover:text-purple-500 transition-colors"
+          >
+            Create an account →
+          </button>
         </div>
       </div>
-    </section>
+
+      {/* Scrollable Right Section (Form) */}
+      <div className="lg:w-1/2 p-12 flex items-center justify-center">
+        <div className="w-full max-w-md">
+          <form onSubmit={handleSubmit} className="space-y-12">
+            <div className="group relative">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 group-focus-within:text-purple-500 transition-colors">
+                Identification
+              </label>
+              <input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                className="block w-full bg-transparent border-b-2 border-[#1a1a1a] py-4 focus:outline-none focus:border-purple-600 transition-colors text-xl font-medium"
+                placeholder="EMAIL@ADDRESS.COM"
+                required
+              />
+            </div>
+
+            <div className="group relative">
+              <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 group-focus-within:text-purple-500 transition-colors">
+                Passphrase
+              </label>
+              <input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                className="block w-full bg-transparent border-b-2 border-[#1a1a1a] py-4 focus:outline-none focus:border-purple-600 transition-colors text-xl font-medium"
+                placeholder="********"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-white text-black py-6 text-sm font-black uppercase tracking-[0.3em] hover:bg-purple-600 hover:text-white transition-all duration-300 transform active:scale-[0.98]"
+            >
+              Authorize Access
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

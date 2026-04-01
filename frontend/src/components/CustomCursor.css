@@ -1,0 +1,41 @@
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    background-color: var(--foreground);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-cursor.hovering {
+    width: 80px;
+    height: 80px;
+    background-color: var(--accent);
+    mix-blend-mode: normal;
+}
+
+.cursor-text {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--background);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.custom-cursor.hovering .cursor-text {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .custom-cursor {
+        display: none;
+    }
+}
