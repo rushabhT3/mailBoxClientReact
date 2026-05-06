@@ -1,8 +1,14 @@
+require('dotenv').config();
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("mailboxclient", "root", "qwertY@1", {
-  host: "localhost",
-  dialect: "mysql",
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'mysql',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
 });
 
 module.exports = { sequelize };

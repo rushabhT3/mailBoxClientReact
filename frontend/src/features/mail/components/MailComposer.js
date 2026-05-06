@@ -32,6 +32,7 @@ const MailComposer = ({ closeDialog }) => {
       alert("Transmission successful.");
       setTo("");
       setSubject("");
+      setEditorState(EditorState.createEmpty());
     } catch (error) {
       console.error("An error occurred while sending the mail:", error);
       alert("Transmission failed.");

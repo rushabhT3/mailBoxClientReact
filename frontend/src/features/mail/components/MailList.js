@@ -17,7 +17,7 @@ const MailList = () => {
     const fetchEmailsInterval = setInterval(async () => {
       try {
         const data = await fetchMails(userEmail);
-        setEmails(data.emails);
+        setEmails(prev => JSON.stringify(prev) === JSON.stringify(data.emails)? prev : data.emails);
       } catch (error) {
         console.error("Error fetching emails:", error.response?.data);
       }

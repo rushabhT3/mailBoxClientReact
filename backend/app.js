@@ -7,7 +7,7 @@ const route = require("./routes/router");
 const app = express();
 const port = 3001;
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: ["https://mail-box-client-react-eight.vercel.app", "http://localhost:3000"] }));
 app.use(express.json());
 app.use("/", route);
 
