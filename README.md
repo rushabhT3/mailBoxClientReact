@@ -7,11 +7,13 @@ This project is a high-end, production-ready MailBox client and server. It featu
 ## 📸 Screenshots
 
 ### 🔑 Authentication Flow
+
 ![Login Page Layout](https://github.com/user-attachments/assets/35dee67b-ba24-415c-9523-9e7f7a89c7fa)
 
 ![Sign Up Page Layout](https://github.com/user-attachments/assets/ecd5226d-7eec-4697-8c6e-2ba000f60a12)
 
 ### 📬 Mail Dashboard
+
 ![Email Composition](https://github.com/user-attachments/assets/f682d711-6235-4b49-acf7-3cb9da8a8c44)
 
 ![Sent Messages](https://github.com/user-attachments/assets/1ab31f39-1d1e-4192-9101-5d3fbcaf9b7b)
@@ -21,6 +23,7 @@ This project is a high-end, production-ready MailBox client and server. It featu
 ## 🏛️ Visual & UX Philosophy
 
 The application has been transformed from a generic UI into a premium digital experience:
+
 - **Aesthetic**: Deep monochromatic dark mode (`#050505`) with high-contrast white typography.
 - **Typography**: Utilizing the geometric **Outfit** font family with massive, bold, all-caps headings for a "studio" feel.
 - **Interactions**: A dynamic circular custom cursor that responds to interactive elements, revealing "VIEW" text on hover.
@@ -31,7 +34,9 @@ The application has been transformed from a generic UI into a premium digital ex
 ## 🚀 Technical Architecture
 
 ### Frontend (React + Tailwind CSS)
+
 The frontend has been completely refactored into a **Feature-Based Modular Structure**:
+
 - **`src/features/auth`**: Encapsulates all authentication logic (SignUp, Login, JWT parsing, and API calls).
 - **`src/features/mail`**: Manages the core email experience (List view, Composer, and Detail view).
 - **`src/components`**: Shared UI elements like the `Layout` and `CustomCursor`.
@@ -40,7 +45,9 @@ The frontend has been completely refactored into a **Feature-Based Modular Struc
 - **Absolute Imports**: Configured via `jsconfig.json` for cleaner code (e.g., `import { login } from "features/auth/api/authApi"`).
 
 ### Backend (Node.js + Express + Sequelize)
+
 A robust REST API providing:
+
 - **Authentication**: JWT-based login and signup.
 - **Mail Management**: Endpoints for composing, fetching (Inbox/Sent), marking as read, and deleting emails.
 - **Database**: Integrated with Sequelize for ORM-based data handling.
@@ -50,20 +57,24 @@ A robust REST API providing:
 ## 🛠️ How to Run
 
 ### 1. Backend Setup
+
 ```bash
 cd backend
 npm install
 npm start
 ```
-*Port: `http://localhost:3001`*
+
+_Port: `http://localhost:3001`_
 
 ### 2. Frontend Setup
+
 ```bash
 cd frontend
 npm install
 npm start
 ```
-*Port: `http://localhost:3000`*
+
+_Port: `http://localhost:3000`_
 
 ---
 
@@ -89,5 +100,6 @@ root/
 
 ---
 
-## 📜 License
-EST. 2026 / MAILBOX CLIENT v1.0
+## 🗄️ Database Service
+
+This application uses **Aiven for MySQL** as the hosted database service.
